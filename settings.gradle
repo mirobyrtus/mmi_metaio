@@ -1,0 +1,4 @@
+include ':MetaioSDK'
+project(':MetaioSDK').projectDir = new File('metaioSDK')
+include ':MetaioSDK_Examples'
+project(':MetaioSDK_Examples').projectDir = new File('Example')
