@@ -16,6 +16,7 @@ public class MetaioMan {
 
     IGeometry model;
     Vector3d translation;
+    int stepSize = 1; // Level
 
     private static Random rand = new Random();
 
@@ -32,26 +33,40 @@ public class MetaioMan {
         model.setVisible(true);
     }
 
-    public void initTranslation() {
-        int randomX = rand.nextInt(300);
-        int randomY = rand.nextInt(300);
-        translation = new Vector3d(200f + randomX, 200f + randomY, 0f);
+    public int getRandomOffset() {
+        int randomOffset = 0;
+        while (Math.abs(randomOffset) <= 200) {
+            randomOffset = rand.nextInt(600) - 300;
+        }
+        return randomOffset;
     }
 
-    public boolean updateTranslation() {
-        if (translation.getX() > 0) {
-            translation.setX(translation.getX() - 1);
+    public void initTranslation() {
+        int randomX = getRandomOffset();
+        int randomY = getRandomOffset();
+        translation = new Vector3d(randomX, randomY, 0f);
+    }
+
+    public boolean updateTranslation(int level) {
+        int levelStepSize = stepSize * level;
+
+        if (Math.abs(translation.getX()) > levelStepSize) {
+            if (translation.getX() < 0) {
+                translation.setX(translation.getX() + levelStepSize);
+            } else {
+                translation.setX(translation.getX() - levelStepSize);
+            }
         }
 
-        if (translation.getY() > 0) {
-            translation.setY(translation.getY() - 1);
+        if (Math.abs(translation.getY()) > levelStepSize) {
+            if (translation.getY() < 0) {
+                translation.setY(translation.getY() + levelStepSize);
+            } else {
+                translation.setY(translation.getY() - levelStepSize);
+            }
         }
 
-        if (translation.getZ() > 0) {
-            translation.setZ(translation.getZ() - 1);
-        }
-
-        if (translation.getX() == 0 && translation.getY() == 0 && translation.getZ() == 0) {
+        if (Math.abs(translation.getX()) <= levelStepSize && Math.abs(translation.getY()) <= levelStepSize) {
             return true;
         }
 
@@ -71,7 +86,7 @@ public class MetaioMan {
             Log.e("InitMetaioMen", "Max count is 10!");
         }
 
-        ArrayList<MetaioMan> result = new ArrayList<MetaioMan>(); // TODO (count)
+        ArrayList<MetaioMan> result = new ArrayList<MetaioMan>();
 
         // Load metaioMan
         final File modelFile = AssetsManager.getAssetPathAsFile(context, METAIOMAN_MODEL_PATH);
@@ -79,7 +94,7 @@ public class MetaioMan {
         for (int metaioManId = 0; metaioManId < count; metaioManId++) {
             IGeometry model = metaioSDK.createGeometry(modelFile);
             model.setName("MetaioMan" + metaioManId);
-            model.setScale(0.5f);
+            model.setScale(0.7f);
 
             result.add(new MetaioMan(model));
         }

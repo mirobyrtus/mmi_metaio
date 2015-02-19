@@ -26,6 +26,8 @@ public class PointsCounter {
     }
 
     public void initThread() {
+        if (running) return;
+
         time = 0;
         running = true;
 

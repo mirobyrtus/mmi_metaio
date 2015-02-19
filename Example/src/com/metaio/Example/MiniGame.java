@@ -6,9 +6,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.metaio.Example.R;
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.MetaioDebug;
 import com.metaio.sdk.jni.IGeometry;
@@ -16,15 +16,12 @@ import com.metaio.sdk.jni.IMetaioSDKCallback;
 import com.metaio.sdk.jni.Rotation;
 import com.metaio.sdk.jni.TrackingValues;
 import com.metaio.sdk.jni.TrackingValuesVector;
-import com.metaio.sdk.jni.Vector3d;
 import com.metaio.tools.io.AssetsManager;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-public class InstantTracking extends ARViewActivity {
+public class MiniGame extends ARViewActivity {
 
     /**
      * metaio SDK callback handler
@@ -64,7 +61,8 @@ public class InstantTracking extends ARViewActivity {
     boolean mMustUseInstantTrackingEvent = false;
 
     public Activity a;
-    PointsCounter time;
+    PointsCounter points;
+    LevelManager levelManager = new LevelManager();
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -77,7 +75,7 @@ public class InstantTracking extends ARViewActivity {
 
         a = this;
 
-        time = new PointsCounter(this, (TextView)mGUIView.findViewById(R.id.timeTextView));
+        points = new PointsCounter(this, (TextView)mGUIView.findViewById(R.id.timeTextView));
 
     }
 
@@ -138,9 +136,10 @@ public class InstantTracking extends ARViewActivity {
         // (e.g. for triggering an action as soon as some target is visible on screen)
         if (tv.isTrackingState()) {
 
-            if (! time.running) {
-                time.initThread();
+            if (! points.running) {
+                points.initThread();
             }
+            int level = levelManager.getLevel();
 
             boolean gameOver = false;
 
@@ -148,7 +147,7 @@ public class InstantTracking extends ARViewActivity {
                 for (MetaioMan metaioMan : mMetaioMen) {
                     metaioMan.translate(mTiger.getTranslation());
 
-                    if (metaioMan.updateTranslation()) {
+                    if (metaioMan.updateTranslation(level)) {
                         gameOver = true;
                         break;
                     }
@@ -157,21 +156,22 @@ public class InstantTracking extends ARViewActivity {
 
             if (gameOver) {
 
-                // TODO evaluate score
-                time.stopThread();
+                points.stopThread();
                 metaioSDK.stopCamera();
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        new AlertDialog.Builder(InstantTracking.this)
+                        new AlertDialog.Builder(MiniGame.this)
                                 .setTitle("Game Over!")
                                 .setMessage("Wanna play again?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
 
                                         // Start new game!
-                                        // time.initThread();
+                                        points.initThread();
+
+                                        levelManager.reset();
 
                                         for (MetaioMan metaioMan : mMetaioMen) {
                                             metaioMan.initTranslation();
@@ -225,24 +225,26 @@ public class InstantTracking extends ARViewActivity {
         finish();
     }
 
-    public void on3DButtonClicked(View v)
-    {
-        mMustUseInstantTrackingEvent = false;
-        mTiger.setVisible(false);
-        metaioSDK.startInstantTracking("INSTANT_3D");
+    public void onStartGameButtonClicked(View v) {
 
-        // metaioSDK.startInstantTracking("INSTANT_2D", new File(""), mPreview);
-        // metaioSDK.startInstantTracking("INSTANT_2D_GRAVITY", new File(""), mPreview);
-        // metaioSDK.startInstantTracking("INSTANT_2D_GRAVITY_SLAM", new File(""), mPreview);
-        // metaioSDK.startInstantTracking("INSTANT_2D_GRAVITY_SLAM_EXTRAPOLATED", new File(""), mPreview);
-        // mPreview = !mPreview;
-    }
+        if (((RadioButton)findViewById(R.id.tracking3D)).isChecked()) {
 
-    public void onPictureMarkerlessButtonClicked(View v)
-    {
-        // TODO !
-        trackingConfigFile = AssetsManager.getAssetPathAsFile(getApplicationContext(), "TutorialTrackingSamples/Assets/TrackingData_MarkerlessFast.xml");
-        metaioSDK.setTrackingConfiguration(trackingConfigFile);
+            mMustUseInstantTrackingEvent = false;
+            mTiger.setVisible(false);
+            metaioSDK.startInstantTracking("INSTANT_3D");
+
+            // metaioSDK.startInstantTracking("INSTANT_2D", new File(""), mPreview);
+            // metaioSDK.startInstantTracking("INSTANT_2D_GRAVITY", new File(""), mPreview);
+            // metaioSDK.startInstantTracking("INSTANT_2D_GRAVITY_SLAM", new File(""), mPreview);
+            // metaioSDK.startInstantTracking("INSTANT_2D_GRAVITY_SLAM_EXTRAPOLATED", new File(""), mPreview);
+            // mPreview = !mPreview;
+
+        } else {
+
+            trackingConfigFile = AssetsManager.getAssetPathAsFile(getApplicationContext(), "TutorialTrackingSamples/Assets/TrackingData_MarkerlessFast.xml");
+            metaioSDK.setTrackingConfiguration(trackingConfigFile);
+
+        }
 
     }
 
@@ -251,8 +253,6 @@ public class InstantTracking extends ARViewActivity {
     {
         try
         {
-            File f2 = AssetsManager.getAssetPathAsFile(getApplicationContext(), "tiger.md2");
-
             // Load tiger model
             final File tigerModelPath =
                     AssetsManager.getAssetPathAsFile(getApplicationContext(), "TutorialInstantTracking/Assets/tiger.md2");
@@ -287,7 +287,6 @@ public class InstantTracking extends ARViewActivity {
     @Override
     protected void onGeometryTouched(IGeometry geometry)
     {
-        // TODO kill other geometries in the game
         String name = geometry.getName();
         if (name.contains("MetaioMan")) {
             String metaioManIdStr = name.substring(name.length() - 1);
@@ -332,11 +331,13 @@ public class InstantTracking extends ARViewActivity {
 
                 mTiger.setVisible(true);
 
-                time.initThread();
-
                 for (MetaioMan metaioMan : mMetaioMen) {
                     metaioMan.enable(mTiger.getCoordinateSystemID());
                 }
+
+
+                // points.initThread();
+                // levelManager = new LevelManager(System.currentTimeMillis());
 
             }
             else
@@ -360,13 +361,9 @@ public class InstantTracking extends ARViewActivity {
 
                         mTiger.setVisible(true);
 
-                        // time.initThread();
-
                         for (MetaioMan metaioMan : mMetaioMen) {
                             metaioMan.enable(mTiger.getCoordinateSystemID());
                         }
-
-                        // TODO enable metaiomen somewhere here!
 
                         break;
                     }

@@ -32,19 +32,31 @@
             android:id="@+id/timeTextView"
             android:background="@android:color/background_light" />
 
-        <Button
-            android:id="@+id/pictureButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onPictureMarkerlessButtonClicked"
-            android:text="Picture" />
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/background_light">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3D Tracking"
+                android:id="@+id/tracking3D"
+                android:checked="true" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marker Tracking"
+                android:id="@+id/trackingMarker" />
+        </RadioGroup>
 
         <Button
-            android:id="@+id/instant3DButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="on3DButtonClicked"
-            android:text="3D" />
+            android:text="Start Game"
+            android:id="@+id/startGame"
+            android:onClick="onStartGameButtonClicked" />
 
     </LinearLayout>
 
