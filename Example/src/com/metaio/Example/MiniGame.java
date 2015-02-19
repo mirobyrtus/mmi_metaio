@@ -158,6 +158,7 @@ public class MiniGame extends ARViewActivity {
 
             if (gameOver) {
 
+                gameStarted = false;
                 points.stopThread();
                 metaioSDK.stopCamera();
 
@@ -172,7 +173,6 @@ public class MiniGame extends ARViewActivity {
 
                                         // Start new game!
                                         points.initThread();
-
                                         levelManager.reset();
 
                                         for (MetaioMan metaioMan : mMetaioMen) {
