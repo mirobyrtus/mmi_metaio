@@ -60,6 +60,8 @@ public class MiniGame extends ARViewActivity {
      */
     boolean mMustUseInstantTrackingEvent = false;
 
+    boolean gameStarted = false;
+
     public Activity a;
     PointsCounter points;
     LevelManager levelManager = new LevelManager();
@@ -214,10 +216,11 @@ public class MiniGame extends ARViewActivity {
     {
         super.onDrawFrame();
 
-        checkDistanceToTarget();
+        if (gameStarted) {
+            checkDistanceToTarget();
 
-        updateMetaioMen();
-
+            updateMetaioMen();
+        }
     }
 
     public void onButtonClick(View v)
@@ -246,6 +249,7 @@ public class MiniGame extends ARViewActivity {
 
         }
 
+        gameStarted = true;
     }
 
     @Override
@@ -335,10 +339,6 @@ public class MiniGame extends ARViewActivity {
                     metaioMan.enable(mTiger.getCoordinateSystemID());
                 }
 
-
-                // points.initThread();
-                // levelManager = new LevelManager(System.currentTimeMillis());
-
             }
             else
             {
@@ -349,27 +349,25 @@ public class MiniGame extends ARViewActivity {
         @Override
         public void onTrackingEvent(TrackingValuesVector trackingValues)
         {
-            // if we detect any target, we bind the loaded geometry to this target
-            if (mTiger != null)
-            {
-                for (int i=0; i < trackingValues.size(); i++)
-                {
-                    final TrackingValues tv = trackingValues.get(i);
-                    if (tv.isTrackingState())
-                    {
-                        mTiger.setCoordinateSystemID(tv.getCoordinateSystemID());
+            if (gameStarted) {
+                // if we detect any target, we bind the loaded geometry to this target
+                if (mTiger != null) {
+                    for (int i = 0; i < trackingValues.size(); i++) {
+                        final TrackingValues tv = trackingValues.get(i);
+                        if (tv.isTrackingState()) {
+                            mTiger.setCoordinateSystemID(tv.getCoordinateSystemID());
 
-                        mTiger.setVisible(true);
+                            mTiger.setVisible(true);
 
-                        for (MetaioMan metaioMan : mMetaioMen) {
-                            metaioMan.enable(mTiger.getCoordinateSystemID());
+                            for (MetaioMan metaioMan : mMetaioMen) {
+                                metaioMan.enable(mTiger.getCoordinateSystemID());
+                            }
+
+                            break;
                         }
-
-                        break;
                     }
                 }
             }
-
         }
 
         @Override
