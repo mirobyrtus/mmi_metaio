@@ -1,5 +1,6 @@
 /Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/classes/debug
 /Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-b6620ea7fdaac023fe87bb58764eb7db4e0f458a.jar
+/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/BT200Ctrl-683054db937ef67f3355e6e8f48d596a11094a4e.jar
 /Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/classes-ee61468660e2a178c11d4e3b4591c9bc01db02e9.jar
 /Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-a6f995477e46fa3d62eace2803fc82636fff62fa.jar
 /Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/metaiosdk-c5da7b55c09149f6de94728a3ab535a780155057.jar

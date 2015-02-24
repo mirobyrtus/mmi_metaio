@@ -16,10 +16,13 @@ import com.metaio.sdk.jni.IMetaioSDKCallback;
 import com.metaio.sdk.jni.Rotation;
 import com.metaio.sdk.jni.TrackingValues;
 import com.metaio.sdk.jni.TrackingValuesVector;
+import com.metaio.tools.SystemInfo;
 import com.metaio.tools.io.AssetsManager;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import jp.epson.moverio.bt200.DisplayControl;
 
 public class MiniGame extends ARViewActivity {
 
@@ -281,10 +284,44 @@ public class MiniGame extends ARViewActivity {
             MetaioDebug.log("Tracking configuration loaded: " + result);
 
 
+            // Setup seetrough
+            File calibrationFile = AssetsManager.getAssetPathAsFile(this, "myCalibration.xml");
+            if ((calibrationFile == null ||
+                    !metaioSDK.setHandEyeCalibrationFromFile(calibrationFile))
+                    && !metaioSDK.setHandEyeCalibrationFromFile())
+            {
+                metaioSDK.setHandEyeCalibrationByDevice();
+            }
+
+            metaioSDK.setStereoRendering(true);
+            metaioSDK.setSeeThrough(true);
         }
         catch (Exception e)
         {
             MetaioDebug.log(Log.ERROR, "Error loading geometry: " + e.getMessage());
+        }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+
+        if (SystemInfo.isEPSONMoverio())
+        {
+            new DisplayControl(this).setMode(DisplayControl.DISPLAY_MODE_3D, false);
+        }
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        if (SystemInfo.isEPSONMoverio())
+        {
+            new DisplayControl(this).setMode(DisplayControl.DISPLAY_MODE_2D, false);
         }
     }
 

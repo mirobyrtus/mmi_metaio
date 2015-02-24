@@ -9,6 +9,13 @@
         <dex dex="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-b6620ea7fdaac023fe87bb58764eb7db4e0f458a.jar" />
     </item>
     <item
+        jar="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="962e8b12569c56dbdcf8367eb4eac8bb129cd18f">
+        <dex dex="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-a6f995477e46fa3d62eace2803fc82636fff62fa.jar" />
+    </item>
+    <item
         jar="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/exploded-aar/mmi_metaio/MetaioSDK/unspecified/classes.jar"
         jumboMode="false"
         revision="21.1.1"
@@ -23,18 +30,18 @@
         <dex dex="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/metaiosdk-c5da7b55c09149f6de94728a3ab535a780155057.jar" />
     </item>
     <item
+        jar="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/libs/BT200Ctrl.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="a3ea07197215d0f28cd50c1d480eb94f7cad6cd1">
+        <dex dex="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/BT200Ctrl-683054db937ef67f3355e6e8f48d596a11094a4e.jar" />
+    </item>
+    <item
         jar="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/classes.jar"
         jumboMode="false"
         revision="21.1.1"
         sha1="d1bf02de1c56d942e7a9d093b8610ba1ef4128e3">
         <dex dex="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/classes-5a3c96434e4179184687b82a0c12c8cae2bc3082.jar" />
-    </item>
-    <item
-        jar="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="962e8b12569c56dbdcf8367eb4eac8bb129cd18f">
-        <dex dex="/Users/mmz/Development/TU/MMI/projectworkspace/mmi_metaio/Example/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-a6f995477e46fa3d62eace2803fc82636fff62fa.jar" />
     </item>
 
 </items>

@@ -110,7 +110,7 @@ MERGED from com.android.support:support-v4:21.0.2:16:5
 		ADDED from AndroidManifest.xml:56:9
 	android:theme
 		ADDED from AndroidManifest.xml:58:9
-activity#com.metaio.Example.InstantTracking
+activity#com.metaio.Example.MiniGame
 ADDED from AndroidManifest.xml:59:9
 	android:label
 		ADDED from AndroidManifest.xml:62:13
